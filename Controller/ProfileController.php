@@ -42,9 +42,11 @@ class ProfileController extends Controller
             throw new AccessDeniedException('This user does not have access to this section.');
         }
 
-        return $this->render('@FOSUser/Profile/show.html.twig', array(
+        $template  = $this->renderView('@FOSUser/Profile/show.html.twig', array(
             'user' => $user,
         ));
+        
+        return new Response($template, 200, ['content-type' => 'text/html']);
     }
 
     /**
@@ -98,8 +100,10 @@ class ProfileController extends Controller
             return $response;
         }
 
-        return $this->render('@FOSUser/Profile/edit.html.twig', array(
+        $template =  $this->renderView('@FOSUser/Profile/edit.html.twig', array(
             'form' => $form->createView(),
         ));
+        
+        return new Response($template, 200, ['content-type' => 'text/html']);
     }
 }
