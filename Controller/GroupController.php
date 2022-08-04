@@ -40,9 +40,11 @@ class GroupController extends Controller
     {
         $groups = $this->get('fos_user.group_manager')->findGroups();
 
-        return $this->render('@FOSUser/Group/list.html.twig', array(
+        $template  = $this->renderView('@FOSUser/Group/list.html.twig', array(
             'groups' => $groups,
         ));
+        
+        return new Response($template, 200, ['content-type' => 'text/html']);
     }
 
     /**
@@ -56,9 +58,12 @@ class GroupController extends Controller
     {
         $group = $this->findGroupBy('name', $groupName);
 
-        return $this->render('@FOSUser/Group/show.html.twig', array(
+        $template  =  $this->renderView('@FOSUser/Group/show.html.twig', array(
             'group' => $group,
         ));
+        
+        
+        return new Response($template, 200, ['content-type' => 'text/html']);
     }
 
     /**
@@ -110,10 +115,12 @@ class GroupController extends Controller
             return $response;
         }
 
-        return $this->render('@FOSUser/Group/edit.html.twig', array(
+        $template  =  $this->renderView('@FOSUser/Group/edit.html.twig', array(
             'form' => $form->createView(),
             'group_name' => $group->getName(),
         ));
+        
+        return new Response($template, 200, ['content-type' => 'text/html']);
     }
 
     /**
@@ -157,9 +164,11 @@ class GroupController extends Controller
             return $response;
         }
 
-        return $this->render('@FOSUser/Group/new.html.twig', array(
+        $template =  $this->renderView('@FOSUser/Group/new.html.twig', array(
             'form' => $form->createView(),
         ));
+        
+        return new Response($template, 200, ['content-type' => 'text/html']);
     }
 
     /**
