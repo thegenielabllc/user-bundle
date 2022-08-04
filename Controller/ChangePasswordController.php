@@ -83,9 +83,13 @@ class ChangePasswordController extends Controller
 
             return $response;
         }
+        
+        
 
-        return $this->render('@FOSUser/ChangePassword/change_password.html.twig', array(
+        $template  =  $this->renderView('@FOSUser/ChangePassword/change_password.html.twig', array(
             'form' => $form->createView(),
         ));
+        
+        return new Response($template, 200, ['content-type' => 'text/html']);
     }
 }
