@@ -12,16 +12,14 @@
 namespace FOS\UserBundle\Form\Type;
 
 use FOS\UserBundle\Form\DataTransformer\UserToUsernameTransformer;
+use FOS\UserBundle\Util\LegacyFormHelper;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 /**
  * Form type for representing a UserInterface instance by its username string.
  *
  * @author Thibault Duplessis <thibault.duplessis@gmail.com>
- *
- * @final
  */
 class UsernameFormType extends AbstractType
 {
@@ -32,6 +30,8 @@ class UsernameFormType extends AbstractType
 
     /**
      * Constructor.
+     *
+     * @param UserToUsernameTransformer $usernameTransformer
      */
     public function __construct(UserToUsernameTransformer $usernameTransformer)
     {
@@ -51,7 +51,16 @@ class UsernameFormType extends AbstractType
      */
     public function getParent()
     {
-        return TextType::class;
+        return LegacyFormHelper::getType('Symfony\Component\Form\Extension\Core\Type\TextType');
+    }
+
+    // BC for SF < 3.0
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->getBlockPrefix();
     }
 
     /**

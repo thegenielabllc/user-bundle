@@ -13,8 +13,6 @@ namespace FOS\UserBundle\Model;
 
 /**
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
- *
- * @deprecated Using Groups is deprecated since version 2.2 and will be removed in 3.0.
  */
 abstract class Group implements GroupInterface
 {
@@ -39,7 +37,7 @@ abstract class Group implements GroupInterface
      * @param string $name
      * @param array  $roles
      */
-    public function __construct($name, $roles = [])
+    public function __construct($name, $roles = array())
     {
         $this->name = $name;
         $this->roles = $roles;

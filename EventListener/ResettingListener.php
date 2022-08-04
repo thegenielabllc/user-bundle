@@ -18,10 +18,6 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-/**
- * @internal
- * @final
- */
 class ResettingListener implements EventSubscriberInterface
 {
     /**
@@ -37,7 +33,8 @@ class ResettingListener implements EventSubscriberInterface
     /**
      * ResettingListener constructor.
      *
-     * @param int $tokenTtl
+     * @param UrlGeneratorInterface $router
+     * @param int                   $tokenTtl
      */
     public function __construct(UrlGeneratorInterface $router, $tokenTtl)
     {
@@ -50,13 +47,16 @@ class ResettingListener implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return [
+        return array(
             FOSUserEvents::RESETTING_RESET_INITIALIZE => 'onResettingResetInitialize',
             FOSUserEvents::RESETTING_RESET_SUCCESS => 'onResettingResetSuccess',
             FOSUserEvents::RESETTING_RESET_REQUEST => 'onResettingResetRequest',
-        ];
+        );
     }
 
+    /**
+     * @param GetResponseUserEvent $event
+     */
     public function onResettingResetInitialize(GetResponseUserEvent $event)
     {
         if (!$event->getUser()->isPasswordRequestNonExpired($this->tokenTtl)) {
@@ -64,6 +64,9 @@ class ResettingListener implements EventSubscriberInterface
         }
     }
 
+    /**
+     * @param FormEvent $event
+     */
     public function onResettingResetSuccess(FormEvent $event)
     {
         /** @var $user \FOS\UserBundle\Model\UserInterface */
@@ -74,6 +77,9 @@ class ResettingListener implements EventSubscriberInterface
         $user->setEnabled(true);
     }
 
+    /**
+     * @param GetResponseUserEvent $event
+     */
     public function onResettingResetRequest(GetResponseUserEvent $event)
     {
         if (!$event->getUser()->isAccountNonLocked()) {

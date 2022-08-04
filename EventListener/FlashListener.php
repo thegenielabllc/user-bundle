@@ -14,19 +14,15 @@ namespace FOS\UserBundle\EventListener;
 use FOS\UserBundle\FOSUserEvents;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Translation\TranslatorInterface;
 
-/**
- * @internal
- * @final
- */
 class FlashListener implements EventSubscriberInterface
 {
     /**
      * @var string[]
      */
-    private static $successMessages = [
+    private static $successMessages = array(
         FOSUserEvents::CHANGE_PASSWORD_COMPLETED => 'change_password.flash.success',
         FOSUserEvents::GROUP_CREATE_COMPLETED => 'group.flash.created',
         FOSUserEvents::GROUP_DELETE_COMPLETED => 'group.flash.deleted',
@@ -34,10 +30,10 @@ class FlashListener implements EventSubscriberInterface
         FOSUserEvents::PROFILE_EDIT_COMPLETED => 'profile.flash.updated',
         FOSUserEvents::REGISTRATION_COMPLETED => 'registration.flash.user_created',
         FOSUserEvents::RESETTING_RESET_COMPLETED => 'resetting.flash.success',
-    ];
+    );
 
     /**
-     * @var SessionInterface
+     * @var Session
      */
     private $session;
 
@@ -48,8 +44,11 @@ class FlashListener implements EventSubscriberInterface
 
     /**
      * FlashListener constructor.
+     *
+     * @param Session             $session
+     * @param TranslatorInterface $translator
      */
-    public function __construct(SessionInterface $session, TranslatorInterface $translator)
+    public function __construct(Session $session, TranslatorInterface $translator)
     {
         $this->session = $session;
         $this->translator = $translator;
@@ -60,7 +59,7 @@ class FlashListener implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return [
+        return array(
             FOSUserEvents::CHANGE_PASSWORD_COMPLETED => 'addSuccessFlash',
             FOSUserEvents::GROUP_CREATE_COMPLETED => 'addSuccessFlash',
             FOSUserEvents::GROUP_DELETE_COMPLETED => 'addSuccessFlash',
@@ -68,10 +67,11 @@ class FlashListener implements EventSubscriberInterface
             FOSUserEvents::PROFILE_EDIT_COMPLETED => 'addSuccessFlash',
             FOSUserEvents::REGISTRATION_COMPLETED => 'addSuccessFlash',
             FOSUserEvents::RESETTING_RESET_COMPLETED => 'addSuccessFlash',
-        ];
+        );
     }
 
     /**
+     * @param Event  $event
      * @param string $eventName
      */
     public function addSuccessFlash(Event $event, $eventName)
@@ -85,10 +85,11 @@ class FlashListener implements EventSubscriberInterface
 
     /**
      * @param string$message
+     * @param array $params
      *
      * @return string
      */
-    private function trans($message, array $params = [])
+    private function trans($message, array $params = array())
     {
         return $this->translator->trans($message, $params, 'FOSUserBundle');
     }

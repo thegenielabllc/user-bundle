@@ -11,15 +11,10 @@
 
 namespace FOS\UserBundle\Form\Type;
 
-@trigger_error('Using Groups is deprecated since version 2.2 and will be removed in 3.0.', E_USER_DEPRECATED);
-
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * @deprecated
- */
 class GroupFormType extends AbstractType
 {
     /**
@@ -40,7 +35,7 @@ class GroupFormType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('name', null, ['label' => 'form.group_name', 'translation_domain' => 'FOSUserBundle']);
+        $builder->add('name', null, array('label' => 'form.group_name', 'translation_domain' => 'FOSUserBundle'));
     }
 
     /**
@@ -48,10 +43,21 @@ class GroupFormType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
+        $resolver->setDefaults(array(
             'data_class' => $this->class,
             'csrf_token_id' => 'group',
-        ]);
+            // BC for SF < 2.8
+            'intention' => 'group',
+        ));
+    }
+
+    // BC for SF < 3.0
+    /**
+     * {@inheritdoc}
+     */
+    public function getName()
+    {
+        return $this->getBlockPrefix();
     }
 
     /**

@@ -41,9 +41,14 @@ class Mailer implements MailerInterface
     protected $parameters;
 
     /**
-     * @param \Swift_Mailer $mailer
+     * Mailer constructor.
+     *
+     * @param \Swift_Mailer         $mailer
+     * @param UrlGeneratorInterface $router
+     * @param EngineInterface       $templating
+     * @param array                 $parameters
      */
-    public function __construct($mailer, UrlGeneratorInterface $router, EngineInterface $templating, array $parameters)
+    public function __construct($mailer, UrlGeneratorInterface  $router, EngineInterface $templating, array $parameters)
     {
         $this->mailer = $mailer;
         $this->router = $router;
@@ -57,11 +62,11 @@ class Mailer implements MailerInterface
     public function sendConfirmationEmailMessage(UserInterface $user)
     {
         $template = $this->parameters['confirmation.template'];
-        $url = $this->router->generate('fos_user_registration_confirm', ['token' => $user->getConfirmationToken()], UrlGeneratorInterface::ABSOLUTE_URL);
-        $rendered = $this->templating->render($template, [
+        $url = $this->router->generate('fos_user_registration_confirm', array('token' => $user->getConfirmationToken()), UrlGeneratorInterface::ABSOLUTE_URL);
+        $rendered = $this->templating->render($template, array(
             'user' => $user,
             'confirmationUrl' => $url,
-        ]);
+        ));
         $this->sendEmailMessage($rendered, $this->parameters['from_email']['confirmation'], (string) $user->getEmail());
     }
 
@@ -71,18 +76,18 @@ class Mailer implements MailerInterface
     public function sendResettingEmailMessage(UserInterface $user)
     {
         $template = $this->parameters['resetting.template'];
-        $url = $this->router->generate('fos_user_resetting_reset', ['token' => $user->getConfirmationToken()], UrlGeneratorInterface::ABSOLUTE_URL);
-        $rendered = $this->templating->render($template, [
+        $url = $this->router->generate('fos_user_resetting_reset', array('token' => $user->getConfirmationToken()), UrlGeneratorInterface::ABSOLUTE_URL);
+        $rendered = $this->templating->render($template, array(
             'user' => $user,
             'confirmationUrl' => $url,
-        ]);
+        ));
         $this->sendEmailMessage($rendered, $this->parameters['from_email']['resetting'], (string) $user->getEmail());
     }
 
     /**
-     * @param string       $renderedTemplate
-     * @param array|string $fromEmail
-     * @param array|string $toEmail
+     * @param string $renderedTemplate
+     * @param string $fromEmail
+     * @param string $toEmail
      */
     protected function sendEmailMessage($renderedTemplate, $fromEmail, $toEmail)
     {
@@ -91,7 +96,7 @@ class Mailer implements MailerInterface
         $subject = array_shift($renderedLines);
         $body = implode("\n", $renderedLines);
 
-        $message = (new \Swift_Message())
+        $message = \Swift_Message::newInstance()
             ->setSubject($subject)
             ->setFrom($fromEmail)
             ->setTo($toEmail)

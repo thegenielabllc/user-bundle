@@ -11,30 +11,17 @@
 
 namespace FOS\UserBundle\Command;
 
-use FOS\UserBundle\Util\UserManipulator;
-use Symfony\Component\Console\Command\Command;
+use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 
 /**
- * @internal
- * @final
+ * ChangePasswordCommand.
  */
-class ChangePasswordCommand extends Command
+class ChangePasswordCommand extends ContainerAwareCommand
 {
-    protected static $defaultName = 'fos:user:change-password';
-
-    private $userManipulator;
-
-    public function __construct(UserManipulator $userManipulator)
-    {
-        parent::__construct();
-
-        $this->userManipulator = $userManipulator;
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -43,10 +30,10 @@ class ChangePasswordCommand extends Command
         $this
             ->setName('fos:user:change-password')
             ->setDescription('Change the password of a user.')
-            ->setDefinition([
+            ->setDefinition(array(
                 new InputArgument('username', InputArgument::REQUIRED, 'The username'),
                 new InputArgument('password', InputArgument::REQUIRED, 'The password'),
-            ])
+            ))
             ->setHelp(<<<'EOT'
 The <info>fos:user:change-password</info> command changes the password of a user:
 
@@ -70,11 +57,10 @@ EOT
         $username = $input->getArgument('username');
         $password = $input->getArgument('password');
 
-        $this->userManipulator->changePassword($username, $password);
+        $manipulator = $this->getContainer()->get('fos_user.util.user_manipulator');
+        $manipulator->changePassword($username, $password);
 
         $output->writeln(sprintf('Changed password for user <comment>%s</comment>', $username));
-
-        return 0;
     }
 
     /**
@@ -82,7 +68,7 @@ EOT
      */
     protected function interact(InputInterface $input, OutputInterface $output)
     {
-        $questions = [];
+        $questions = array();
 
         if (!$input->getArgument('username')) {
             $question = new Question('Please give the username:');

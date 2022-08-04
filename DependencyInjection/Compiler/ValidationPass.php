@@ -18,9 +18,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  * Registers the additional validators according to the storage.
  *
  * @author Christophe Coevoet <stof@notk.org>
- *
- * @internal
- * @final
  */
 class ValidationPass implements CompilerPassInterface
 {
@@ -42,6 +39,6 @@ class ValidationPass implements CompilerPassInterface
         $validationFile = __DIR__.'/../../Resources/config/storage-validation/'.$storage.'.xml';
 
         $container->getDefinition('validator.builder')
-            ->addMethodCall('addXmlMapping', [$validationFile]);
+            ->addMethodCall('addXmlMapping', array($validationFile));
     }
 }

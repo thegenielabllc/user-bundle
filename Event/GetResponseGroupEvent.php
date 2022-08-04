@@ -11,15 +11,8 @@
 
 namespace FOS\UserBundle\Event;
 
-@trigger_error('Using Groups is deprecated since version 2.2 and will be removed in 3.0.', E_USER_DEPRECATED);
-
 use Symfony\Component\HttpFoundation\Response;
 
-/**
- * @final
- *
- * @deprecated
- */
 class GetResponseGroupEvent extends GroupEvent
 {
     /**
@@ -27,6 +20,9 @@ class GetResponseGroupEvent extends GroupEvent
      */
     private $response;
 
+    /**
+     * @param Response $response
+     */
     public function setResponse(Response $response)
     {
         $this->response = $response;

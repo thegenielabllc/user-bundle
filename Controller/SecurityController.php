@@ -14,34 +14,19 @@ namespace FOS\UserBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Security;
-use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
-/**
- * Controller managing security.
- *
- * @author Thibault Duplessis <thibault.duplessis@gmail.com>
- * @author Christophe Coevoet <stof@notk.org>
- *
- * @final
- */
 class SecurityController extends Controller
 {
-    private $tokenManager;
-
-    public function __construct(CsrfTokenManagerInterface $tokenManager = null)
-    {
-        $this->tokenManager = $tokenManager;
-    }
-
     /**
+     * @param Request $request
+     *
      * @return Response
      */
     public function loginAction(Request $request)
     {
-        /** @var $session Session */
+        /** @var $session \Symfony\Component\HttpFoundation\Session\Session */
         $session = $request->getSession();
 
         $authErrorKey = Security::AUTHENTICATION_ERROR;
@@ -64,15 +49,28 @@ class SecurityController extends Controller
         // last username entered by the user
         $lastUsername = (null === $session) ? '' : $session->get($lastUsernameKey);
 
-        $csrfToken = $this->tokenManager
-            ? $this->tokenManager->getToken('authenticate')->getValue()
+        $csrfToken = $this->has('security.csrf.token_manager')
+            ? $this->get('security.csrf.token_manager')->getToken('authenticate')->getValue()
             : null;
 
-        return $this->renderLogin([
+        return $this->renderLogin(array(
             'last_username' => $lastUsername,
             'error' => $error,
             'csrf_token' => $csrfToken,
-        ]);
+        ));
+    }
+
+    /**
+     * Renders the login template with the given parameters. Overwrite this function in
+     * an extended controller to provide additional data for the login template.
+     *
+     * @param array $data
+     *
+     * @return Response
+     */
+    protected function renderLogin(array $data)
+    {
+        return $this->render('@FOSUser/Security/login.html.twig', $data);
     }
 
     public function checkAction()
@@ -83,16 +81,5 @@ class SecurityController extends Controller
     public function logoutAction()
     {
         throw new \RuntimeException('You must activate the logout in your security firewall configuration.');
-    }
-
-    /**
-     * Renders the login template with the given parameters. Overwrite this function in
-     * an extended controller to provide additional data for the login template.
-     *
-     * @return Response
-     */
-    protected function renderLogin(array $data)
-    {
-        return $this->render('@FOSUser/Security/login.html.twig', $data);
     }
 }

@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\Request;
 class UserEvent extends Event
 {
     /**
-     * @var Request|null
+     * @var null|Request
      */
     protected $request;
 
@@ -29,6 +29,9 @@ class UserEvent extends Event
 
     /**
      * UserEvent constructor.
+     *
+     * @param UserInterface $user
+     * @param Request|null  $request
      */
     public function __construct(UserInterface $user, Request $request = null)
     {

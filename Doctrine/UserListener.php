@@ -12,10 +12,10 @@
 namespace FOS\UserBundle\Doctrine;
 
 use Doctrine\Common\EventSubscriber;
+use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
+use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ORM\EntityManager;
-use Doctrine\Persistence\Event\LifecycleEventArgs;
-use Doctrine\Persistence\ObjectManager;
 use FOS\UserBundle\Model\UserInterface;
 use FOS\UserBundle\Util\CanonicalFieldsUpdater;
 use FOS\UserBundle\Util\PasswordUpdaterInterface;
@@ -25,9 +25,6 @@ use FOS\UserBundle\Util\PasswordUpdaterInterface;
  *
  * @author Christophe Coevoet <stof@notk.org>
  * @author David Buchmann <mail@davidbu.ch>
- *
- * @internal
- * @final
  */
 class UserListener implements EventSubscriber
 {
@@ -45,14 +42,16 @@ class UserListener implements EventSubscriber
      */
     public function getSubscribedEvents()
     {
-        return [
+        return array(
             'prePersist',
             'preUpdate',
-        ];
+        );
     }
 
     /**
      * Pre persist listener based on doctrine common.
+     *
+     * @param LifecycleEventArgs $args
      */
     public function prePersist(LifecycleEventArgs $args)
     {
@@ -64,6 +63,8 @@ class UserListener implements EventSubscriber
 
     /**
      * Pre update listener based on doctrine common.
+     *
+     * @param LifecycleEventArgs $args
      */
     public function preUpdate(LifecycleEventArgs $args)
     {
@@ -76,6 +77,8 @@ class UserListener implements EventSubscriber
 
     /**
      * Updates the user properties.
+     *
+     * @param UserInterface $user
      */
     private function updateUserFields(UserInterface $user)
     {
@@ -85,6 +88,9 @@ class UserListener implements EventSubscriber
 
     /**
      * Recomputes change set for Doctrine implementations not doing it automatically after the event.
+     *
+     * @param ObjectManager $om
+     * @param UserInterface $user
      */
     private function recomputeChangeSet(ObjectManager $om, UserInterface $user)
     {

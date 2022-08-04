@@ -11,38 +11,17 @@
 
 namespace FOS\UserBundle\Model;
 
-use Symfony\Component\Security\Core\User\EquatableInterface;
-use Symfony\Component\Security\Core\User\UserInterface as BaseUserInterface;
-
-// This is required to support apps that explicitly check if a user is an instance of AdvancedUserInterface
-if (interface_exists('\Symfony\Component\Security\Core\User\AdvancedUserInterface')) {
-    /**
-     * @internal Only for back compatibility. Remove / merge when dropping support for Symfony 4
-     *
-     * @deprecated
-     */
-    interface CompatUserInterface extends \Symfony\Component\Security\Core\User\AdvancedUserInterface
-    {
-    }
-} else {
-    /**
-     * @internal Only for back compatibility. Remove / merge when dropping support for Symfony 4
-     */
-    interface CompatUserInterface extends BaseUserInterface, EquatableInterface
-    {
-    }
-}
+use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 
 /**
  * @author Thibault Duplessis <thibault.duplessis@gmail.com>
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
- * @author Julian Finkler <julian@developer-heaven.de>
  */
-interface UserInterface extends CompatUserInterface, \Serializable
+interface UserInterface extends AdvancedUserInterface, \Serializable
 {
-    public const ROLE_DEFAULT = 'ROLE_USER';
+    const ROLE_DEFAULT = 'ROLE_USER';
 
-    public const ROLE_SUPER_ADMIN = 'ROLE_SUPER_ADMIN';
+    const ROLE_SUPER_ADMIN = 'ROLE_SUPER_ADMIN';
 
     /**
      * Returns the user unique id.
@@ -56,7 +35,7 @@ interface UserInterface extends CompatUserInterface, \Serializable
      *
      * @param string $username
      *
-     * @return static
+     * @return self
      */
     public function setUsername($username);
 
@@ -72,14 +51,12 @@ interface UserInterface extends CompatUserInterface, \Serializable
      *
      * @param string $usernameCanonical
      *
-     * @return static
+     * @return self
      */
     public function setUsernameCanonical($usernameCanonical);
 
     /**
      * @param string|null $salt
-     *
-     * @return static
      */
     public function setSalt($salt);
 
@@ -95,7 +72,7 @@ interface UserInterface extends CompatUserInterface, \Serializable
      *
      * @param string $email
      *
-     * @return static
+     * @return self
      */
     public function setEmail($email);
 
@@ -111,7 +88,7 @@ interface UserInterface extends CompatUserInterface, \Serializable
      *
      * @param string $emailCanonical
      *
-     * @return static
+     * @return self
      */
     public function setEmailCanonical($emailCanonical);
 
@@ -127,7 +104,7 @@ interface UserInterface extends CompatUserInterface, \Serializable
      *
      * @param string $password
      *
-     * @return static
+     * @return self
      */
     public function setPlainPassword($password);
 
@@ -136,7 +113,7 @@ interface UserInterface extends CompatUserInterface, \Serializable
      *
      * @param string $password
      *
-     * @return static
+     * @return self
      */
     public function setPassword($password);
 
@@ -150,7 +127,7 @@ interface UserInterface extends CompatUserInterface, \Serializable
     /**
      * @param bool $boolean
      *
-     * @return static
+     * @return self
      */
     public function setEnabled($boolean);
 
@@ -159,30 +136,32 @@ interface UserInterface extends CompatUserInterface, \Serializable
      *
      * @param bool $boolean
      *
-     * @return static
+     * @return self
      */
     public function setSuperAdmin($boolean);
 
     /**
      * Gets the confirmation token.
      *
-     * @return string|null
+     * @return string
      */
     public function getConfirmationToken();
 
     /**
      * Sets the confirmation token.
      *
-     * @param string|null $confirmationToken
+     * @param string $confirmationToken
      *
-     * @return static
+     * @return self
      */
     public function setConfirmationToken($confirmationToken);
 
     /**
      * Sets the timestamp that the user requested a password reset.
      *
-     * @return static
+     * @param null|\DateTime $date
+     *
+     * @return self
      */
     public function setPasswordRequestedAt(\DateTime $date = null);
 
@@ -191,14 +170,16 @@ interface UserInterface extends CompatUserInterface, \Serializable
      *
      * @param int $ttl Requests older than this many seconds will be considered expired
      *
-     * @return bool
+     * @return int
      */
     public function isPasswordRequestNonExpired($ttl);
 
     /**
      * Sets the last login time.
      *
-     * @return static
+     * @param \DateTime $time
+     *
+     * @return self
      */
     public function setLastLogin(\DateTime $time = null);
 
@@ -221,7 +202,9 @@ interface UserInterface extends CompatUserInterface, \Serializable
      *
      * This overwrites any previous roles.
      *
-     * @return static
+     * @param array $roles
+     *
+     * @return self
      */
     public function setRoles(array $roles);
 
@@ -230,7 +213,7 @@ interface UserInterface extends CompatUserInterface, \Serializable
      *
      * @param string $role
      *
-     * @return static
+     * @return self
      */
     public function addRole($role);
 
@@ -239,55 +222,7 @@ interface UserInterface extends CompatUserInterface, \Serializable
      *
      * @param string $role
      *
-     * @return static
+     * @return self
      */
     public function removeRole($role);
-
-    /**
-     * Checks whether the user's account has expired.
-     *
-     * Internally, if this method returns false, the authentication system
-     * will throw an AccountExpiredException and prevent login.
-     *
-     * @return bool true if the user's account is non expired, false otherwise
-     *
-     * @see AccountExpiredException
-     */
-    public function isAccountNonExpired();
-
-    /**
-     * Checks whether the user is locked.
-     *
-     * Internally, if this method returns false, the authentication system
-     * will throw a LockedException and prevent login.
-     *
-     * @return bool true if the user is not locked, false otherwise
-     *
-     * @see LockedException
-     */
-    public function isAccountNonLocked();
-
-    /**
-     * Checks whether the user's credentials (password) has expired.
-     *
-     * Internally, if this method returns false, the authentication system
-     * will throw a CredentialsExpiredException and prevent login.
-     *
-     * @return bool true if the user's credentials are non expired, false otherwise
-     *
-     * @see CredentialsExpiredException
-     */
-    public function isCredentialsNonExpired();
-
-    /**
-     * Checks whether the user is enabled.
-     *
-     * Internally, if this method returns false, the authentication system
-     * will throw a DisabledException and prevent login.
-     *
-     * @return bool true if the user is enabled, false otherwise
-     *
-     * @see DisabledException
-     */
-    public function isEnabled();
 }

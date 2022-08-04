@@ -11,15 +11,11 @@
 
 namespace FOS\UserBundle\Model;
 
-@trigger_error('Using Groups is deprecated since version 2.2 and will be removed in 3.0.', E_USER_DEPRECATED);
-
 /**
  * Abstract Group Manager implementation which can be used as base class for your
  * concrete manager.
  *
  * @author Christophe Coevoet <stof@notk.org>
- *
- * @deprecated
  */
 abstract class GroupManager implements GroupManagerInterface
 {
@@ -32,12 +28,11 @@ abstract class GroupManager implements GroupManagerInterface
 
         return new $class($name);
     }
-
     /**
      * {@inheritdoc}
      */
     public function findGroupByName($name)
     {
-        return $this->findGroupBy(['name' => $name]);
+        return $this->findGroupBy(array('name' => $name));
     }
 }

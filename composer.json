@@ -2,9 +2,7 @@
     "name": "friendsofsymfony/user-bundle",
     "type": "symfony-bundle",
     "description": "Symfony FOSUserBundle",
-    "keywords": [
-        "User management"
-    ],
+    "keywords": ["User management"],
     "homepage": "http://friendsofsymfony.github.com",
     "license": "MIT",
     "authors": [
@@ -13,7 +11,8 @@
             "email": "stof@notk.org"
         },
         {
-            "name": "Thibault Duplessis"
+            "name": "Thibault Duplessis",
+            "email": "thibault.duplessis@gmail.com"
         },
         {
             "name": "FriendsOfSymfony Community",
@@ -21,41 +20,28 @@
         }
     ],
     "require": {
-        "php": "^7.1.3 || ^8.0",
-        "ext-dom": "*",
-        "ext-json": "*",
-        "paragonie/random_compat": "^1 || ^2 || ^9",
-        "symfony/config": "^4.4",
-        "symfony/dependency-injection": "^4.4",
-        "symfony/form": "^4.4",
-        "symfony/framework-bundle": "^4.4",
-        "symfony/security-bundle": "^4.4",
-        "symfony/templating": "^4.4",
-        "symfony/translation": "^4.4",
-        "symfony/twig-bundle": "^4.4",
-        "symfony/validator": "^4.4",
-        "twig/twig": "^1.34 || ^2.4 || ^3.0"
-    },
-    "conflict": {
-        "doctrine/doctrine-bundle": "<1.3",
-        "doctrine/persistence": "<1.3",
-        "symfony/doctrine-bridge": "<4.4"
+        "php": "^5.5.9 || ^7.0",
+        "symfony/form": "^2.7 || ^3.0",
+        "symfony/framework-bundle": "^2.7 || ^3.0",
+        "symfony/security-bundle": "^2.7 || ^3.0",
+        "symfony/twig-bundle": "^2.7 || ^3.0",
+        "twig/twig": "^1.28 || ^2.0",
+        "symfony/templating": "^2.7 || ^3.0",
+        "paragonie/random_compat": "^1 || ^2"
     },
     "require-dev": {
         "doctrine/doctrine-bundle": "^1.3",
-        "friendsofphp/php-cs-fixer": "^3.0.2",
-        "swiftmailer/swiftmailer": "^4.3 || ^5.0 || ^6.0",
-        "symfony/console": "^4.4",
-        "symfony/phpunit-bridge": "^5.3",
-        "symfony/yaml": "^4.4"
+        "friendsofphp/php-cs-fixer": "^1.11",
+        "swiftmailer/swiftmailer": "^4.3 || ^5.0",
+        "symfony/console": "^2.7 || ^3.0",
+        "symfony/phpunit-bridge": "^2.7 || ^3.0",
+        "symfony/validator": "^2.7 || ^3.0",
+        "symfony/yaml": "^2.7 || ^3.0",
+        "phpunit/phpunit": "~4.8|~5.0"
     },
-    "config": {
-        "sort-packages": true
-    },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "2.2.x-dev"
-        }
+    "conflict": {
+        "doctrine/doctrine-bundle": "<1.3",
+        "symfony/doctrine-bridge": "<2.7"
     },
     "autoload": {
         "psr-4": {
@@ -65,9 +51,9 @@
             "/Tests/"
         ]
     },
-    "autoload-dev": {
-        "psr-4": {
-            "FOS\\UserBundle\\Tests\\": "/Tests/"
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.0.x-dev"
         }
     },
     "support": {

@@ -16,12 +16,9 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
- * Inject RememberMeServices into LoginManager.
+ * Registers the additional validators according to the storage.
  *
  * @author Vasily Khayrulin <sirianru@gmail.com>
- *
- * @internal
- * @final
  */
 class InjectRememberMeServicesPass implements CompilerPassInterface
 {

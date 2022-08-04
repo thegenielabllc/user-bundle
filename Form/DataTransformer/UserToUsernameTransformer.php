@@ -20,8 +20,6 @@ use Symfony\Component\Form\Exception\UnexpectedTypeException;
  * Transforms between a UserInterface instance and a username string.
  *
  * @author Thibault Duplessis <thibault.duplessis@gmail.com>
- *
- * @final
  */
 class UserToUsernameTransformer implements DataTransformerInterface
 {
@@ -32,6 +30,8 @@ class UserToUsernameTransformer implements DataTransformerInterface
 
     /**
      * UserToUsernameTransformer constructor.
+     *
+     * @param UserManagerInterface $userManager
      */
     public function __construct(UserManagerInterface $userManager)
     {
@@ -50,7 +50,7 @@ class UserToUsernameTransformer implements DataTransformerInterface
     public function transform($value)
     {
         if (null === $value) {
-            return;
+            return null;
         }
 
         if (!$value instanceof UserInterface) {
@@ -72,7 +72,7 @@ class UserToUsernameTransformer implements DataTransformerInterface
     public function reverseTransform($value)
     {
         if (null === $value || '' === $value) {
-            return;
+            return null;
         }
 
         if (!is_string($value)) {

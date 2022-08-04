@@ -35,15 +35,13 @@ Here is the default ``layout.html.twig`` provided by the FOSUserBundle:
                 {% endif %}
             </div>
 
-            {% if app.request.hasPreviousSession %}
-                {% for type, messages in app.session.flashBag.all %}
-                    {% for message in messages %}
-                        <div class="{{ type }}">
-                            {{ message|trans({}, 'FOSUserBundle') }}
-                        </div>
-                    {% endfor %}
+            {% for type, messages in app.session.flashBag.all %}
+                {% for message in messages %}
+                    <div class="{{ type }}">
+                        {{ message|trans({}, 'FOSUserBundle') }}
+                    </div>
                 {% endfor %}
-            {% endif %}
+            {% endfor %}
 
             <div>
                 {% block fos_user_content %}

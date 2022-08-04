@@ -11,8 +11,7 @@
 
 namespace FOS\UserBundle\Command;
 
-use FOS\UserBundle\Util\UserManipulator;
-use Symfony\Component\Console\Command\Command;
+use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -20,23 +19,9 @@ use Symfony\Component\Console\Question\Question;
 
 /**
  * @author Antoine Hérault <antoine.herault@gmail.com>
- *
- * @internal
- * @final
  */
-class DeactivateUserCommand extends Command
+class DeactivateUserCommand extends ContainerAwareCommand
 {
-    protected static $defaultName = 'fos:user:deactivate';
-
-    private $userManipulator;
-
-    public function __construct(UserManipulator $userManipulator)
-    {
-        parent::__construct();
-
-        $this->userManipulator = $userManipulator;
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -45,9 +30,9 @@ class DeactivateUserCommand extends Command
         $this
             ->setName('fos:user:deactivate')
             ->setDescription('Deactivate a user')
-            ->setDefinition([
+            ->setDefinition(array(
                 new InputArgument('username', InputArgument::REQUIRED, 'The username'),
-            ])
+            ))
             ->setHelp(<<<'EOT'
 The <info>fos:user:deactivate</info> command deactivates a user (will not be able to log in)
 
@@ -63,11 +48,10 @@ EOT
     {
         $username = $input->getArgument('username');
 
-        $this->userManipulator->deactivate($username);
+        $manipulator = $this->getContainer()->get('fos_user.util.user_manipulator');
+        $manipulator->deactivate($username);
 
         $output->writeln(sprintf('User "%s" has been deactivated.', $username));
-
-        return 0;
     }
 
     /**

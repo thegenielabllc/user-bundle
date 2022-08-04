@@ -72,6 +72,8 @@ to enter one. An example of using this command is listed below.
 
 .. code-block:: bash
 
+    $ php app/console fos:user:activate testuser
+    $ # OR if you are using Symfony >= 2.8 with the new directory structure
     $ php bin/console fos:user:activate testuser
 
 Deactivate a User
@@ -84,6 +86,8 @@ to enter one. Below is an example of using this command.
 
 .. code-block:: bash
 
+    $ php app/console fos:user:deactivate testuser
+    $ # OR if you are using Symfony >= 2.8 with the new directory structure
     $ php bin/console fos:user:deactivate testuser
 
 Promote a User

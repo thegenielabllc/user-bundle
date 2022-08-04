@@ -41,18 +41,13 @@ registration:
 
             アカウントを有効化するには、次の確認 URL へアクセスしてください %confirmationUrl%
 
-            このリンクは一度しか使用できません。
 
             開発チーム
 
 resetting:
-    check_email: |
-        メールが送信されました。送信されたリンクをクリックしてパスワードをリセットして下さい。
-        注意：パスワードのリセットは %tokenLifetime% 時間のあいだに一度しか要求できません。
-
-        もしメールが届かない場合は、迷惑メールフォルダをご確認いただき、その上で再度やり直して下さい。
+#    check_email: '%email% 宛にメールを送信しました。メールに記載された確認 URL にアクセスして、アカウントを有効化してください。'
     request:
-        username: ユーザー名またはメールアドレス
+        username: ユーザー名かメールアドレス
         submit: パスワードのリセット
     reset:
         submit: パスワードの変更
@@ -68,7 +63,6 @@ resetting:
 
             開発チーム
 
-# Global strings
 layout:
     logout: ログアウト
     login: ログイン

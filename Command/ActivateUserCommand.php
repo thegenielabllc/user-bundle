@@ -11,8 +11,7 @@
 
 namespace FOS\UserBundle\Command;
 
-use FOS\UserBundle\Util\UserManipulator;
-use Symfony\Component\Console\Command\Command;
+use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -20,23 +19,9 @@ use Symfony\Component\Console\Question\Question;
 
 /**
  * @author Antoine Hérault <antoine.herault@gmail.com>
- *
- * @internal
- * @final
  */
-class ActivateUserCommand extends Command
+class ActivateUserCommand extends ContainerAwareCommand
 {
-    protected static $defaultName = 'fos:user:activate';
-
-    private $userManipulator;
-
-    public function __construct(UserManipulator $userManipulator)
-    {
-        parent::__construct();
-
-        $this->userManipulator = $userManipulator;
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -45,9 +30,9 @@ class ActivateUserCommand extends Command
         $this
             ->setName('fos:user:activate')
             ->setDescription('Activate a user')
-            ->setDefinition([
+            ->setDefinition(array(
                 new InputArgument('username', InputArgument::REQUIRED, 'The username'),
-            ])
+            ))
             ->setHelp(<<<'EOT'
 The <info>fos:user:activate</info> command activates a user (so they will be able to log in):
 
@@ -63,11 +48,10 @@ EOT
     {
         $username = $input->getArgument('username');
 
-        $this->userManipulator->activate($username);
+        $manipulator = $this->getContainer()->get('fos_user.util.user_manipulator');
+        $manipulator->activate($username);
 
         $output->writeln(sprintf('User "%s" has been activated.', $username));
-
-        return 0;
     }
 
     /**

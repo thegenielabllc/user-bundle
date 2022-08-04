@@ -120,11 +120,17 @@ Override the default registration form with your own::
         public function buildForm(FormBuilderInterface $builder, array $options)
         {
             $builder->add('invitation', 'AppBundle\Form\InvitationFormType');
+
+            // Or for Symfony < 2.8
+            // $builder->add('invitation', 'app_invitation_type');
         }
 
         public function getParent()
         {
             return 'FOS\UserBundle\Form\Type\RegistrationFormType';
+
+            // Or for Symfony < 2.8
+            // return 'fos_user_registration';
         }
 
         public function getBlockPrefix()
@@ -177,6 +183,9 @@ Create the invitation field::
         public function getParent()
         {
             return 'Symfony\Component\Form\Extension\Core\Type\TextType';
+
+            // Or for Symfony < 2.8
+            // return 'text';
         }
 
         public function getBlockPrefix()
@@ -318,5 +327,7 @@ Next overwrite the default ``RegistrationFormType`` with the one just created :
         registration:
             form:
                 type: AppBundle\Form\RegistrationFormType
+                # Or for Symfony < 2.8
+                # type: app_user_registration
 
 You are done, go to your registration form to see the result.

@@ -16,9 +16,6 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-/**
- * @final
- */
 class FormEvent extends Event
 {
     /**
@@ -38,6 +35,9 @@ class FormEvent extends Event
 
     /**
      * FormEvent constructor.
+     *
+     * @param FormInterface $form
+     * @param Request       $request
      */
     public function __construct(FormInterface $form, Request $request)
     {
@@ -61,6 +61,9 @@ class FormEvent extends Event
         return $this->request;
     }
 
+    /**
+     * @param Response $response
+     */
     public function setResponse(Response $response)
     {
         $this->response = $response;

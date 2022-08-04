@@ -14,20 +14,18 @@ namespace FOS\UserBundle\Model;
 /**
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  * @author Christophe Coevoet <stof@notk.org>
- *
- * @deprecated Using Groups is deprecated since version 2.2 and will be removed in 3.0.
  */
 interface GroupInterface
 {
     /**
      * @param string $role
      *
-     * @return static
+     * @return self
      */
     public function addRole($role);
 
     /**
-     * @return mixed
+     * @return int
      */
     public function getId();
 
@@ -51,19 +49,21 @@ interface GroupInterface
     /**
      * @param string $role
      *
-     * @return static
+     * @return self
      */
     public function removeRole($role);
 
     /**
      * @param string $name
      *
-     * @return static
+     * @return self
      */
     public function setName($name);
 
     /**
-     * @return static
+     * @param array $roles
+     *
+     * @return self
      */
     public function setRoles(array $roles);
 }

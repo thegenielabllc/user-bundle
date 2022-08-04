@@ -13,7 +13,6 @@ namespace FOS\UserBundle\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Symfony\Component\Security\Core\User\UserInterface as BaseUserInterface;
 
 /**
  * Storage agnostic user object.
@@ -75,24 +74,24 @@ abstract class User implements UserInterface, GroupableInterface
     protected $plainPassword;
 
     /**
-     * @var \DateTime|null
+     * @var \DateTime
      */
     protected $lastLogin;
 
     /**
      * Random string sent to the user email address in order to verify it.
      *
-     * @var string|null
+     * @var string
      */
     protected $confirmationToken;
 
     /**
-     * @var \DateTime|null
+     * @var \DateTime
      */
     protected $passwordRequestedAt;
 
     /**
-     * @var GroupInterface[]|Collection
+     * @var Collection
      */
     protected $groups;
 
@@ -107,15 +106,7 @@ abstract class User implements UserInterface, GroupableInterface
     public function __construct()
     {
         $this->enabled = false;
-        $this->roles = [];
-    }
-
-    /**
-     * @return string
-     */
-    public function __toString()
-    {
-        return (string) $this->getUsername();
+        $this->roles = array();
     }
 
     /**
@@ -140,7 +131,7 @@ abstract class User implements UserInterface, GroupableInterface
      */
     public function serialize()
     {
-        return serialize([
+        return serialize(array(
             $this->password,
             $this->salt,
             $this->usernameCanonical,
@@ -149,7 +140,7 @@ abstract class User implements UserInterface, GroupableInterface
             $this->id,
             $this->email,
             $this->emailCanonical,
-        ]);
+        ));
     }
 
     /**
@@ -256,7 +247,7 @@ abstract class User implements UserInterface, GroupableInterface
     /**
      * Gets the last login time.
      *
-     * @return \DateTime|null
+     * @return \DateTime
      */
     public function getLastLogin()
     {
@@ -285,7 +276,7 @@ abstract class User implements UserInterface, GroupableInterface
         // we need to make sure to have at least one role
         $roles[] = static::ROLE_DEFAULT;
 
-        return array_values(array_unique($roles));
+        return array_unique($roles);
     }
 
     /**
@@ -473,7 +464,7 @@ abstract class User implements UserInterface, GroupableInterface
     /**
      * Gets the timestamp that the user requested a password reset.
      *
-     * @return \DateTime|null
+     * @return null|\DateTime
      */
     public function getPasswordRequestedAt()
     {
@@ -494,7 +485,7 @@ abstract class User implements UserInterface, GroupableInterface
      */
     public function setRoles(array $roles)
     {
-        $this->roles = [];
+        $this->roles = array();
 
         foreach ($roles as $role) {
             $this->addRole($role);
@@ -516,7 +507,7 @@ abstract class User implements UserInterface, GroupableInterface
      */
     public function getGroupNames()
     {
-        $names = [];
+        $names = array();
         foreach ($this->getGroups() as $group) {
             $names[] = $group->getName();
         }
@@ -557,26 +548,10 @@ abstract class User implements UserInterface, GroupableInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @return string
      */
-    public function isEqualTo(BaseUserInterface $user)
+    public function __toString()
     {
-        if (!$user instanceof self) {
-            return false;
-        }
-
-        if ($this->password !== $user->getPassword()) {
-            return false;
-        }
-
-        if ($this->salt !== $user->getSalt()) {
-            return false;
-        }
-
-        if ($this->username !== $user->getUsername()) {
-            return false;
-        }
-
-        return true;
+        return (string) $this->getUsername();
     }
 }

@@ -15,8 +15,6 @@ namespace FOS\UserBundle\Model;
  * @author Thibault Duplessis <thibault.duplessis@gmail.com>
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  * @author Christophe Coevoet <stof@notk.org>
- *
- * @deprecated Using Groups is deprecated since version 2.2 and will be removed in 3.0.
  */
 interface GroupableInterface
 {
@@ -46,14 +44,18 @@ interface GroupableInterface
     /**
      * Add a group to the user groups.
      *
-     * @return static
+     * @param GroupInterface $group
+     *
+     * @return self
      */
     public function addGroup(GroupInterface $group);
 
     /**
      * Remove a group from the user groups.
      *
-     * @return static
+     * @param GroupInterface $group
+     *
+     * @return self
      */
     public function removeGroup(GroupInterface $group);
 }
