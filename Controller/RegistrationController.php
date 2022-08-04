@@ -50,6 +50,10 @@ class RegistrationController extends Controller
 
         $user = $userManager->createUser();
         $user->setEnabled(true);
+        
+        if (is_null($user->getUsername())) {
+            $user->setUsername(uniqid());
+        }
 
         $event = new GetResponseUserEvent($user, $request);
         $dispatcher->dispatch(FOSUserEvents::REGISTRATION_INITIALIZE, $event);
@@ -61,6 +65,7 @@ class RegistrationController extends Controller
         $form = $formFactory->createForm();
         $form->setData($user);
 
+        
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
