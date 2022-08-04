@@ -38,7 +38,9 @@ class ResettingController extends Controller
      */
     public function requestAction()
     {
-        return $this->render('@FOSUser/Resetting/request.html.twig');
+        $template =  $this->renderView('@FOSUser/Resetting/request.html.twig');
+        
+         return new Response($template, 200, ['content-type' => 'text/html']);
     }
 
     /**
@@ -121,9 +123,11 @@ class ResettingController extends Controller
             return new RedirectResponse($this->generateUrl('fos_user_resetting_request'));
         }
 
-        return $this->render('@FOSUser/Resetting/check_email.html.twig', array(
+        $template =  $this->renderView('@FOSUser/Resetting/check_email.html.twig', array(
             'tokenLifetime' => ceil($this->container->getParameter('fos_user.resetting.retry_ttl') / 3600),
         ));
+        
+        return new Response($template, 200, ['content-type' => 'text/html']);
     }
 
     /**
@@ -180,9 +184,11 @@ class ResettingController extends Controller
             return $response;
         }
 
-        return $this->render('@FOSUser/Resetting/reset.html.twig', array(
+        $template =  $this->renderView('@FOSUser/Resetting/reset.html.twig', array(
             'token' => $token,
             'form' => $form->createView(),
         ));
+        
+        return new Response($template, 200, ['content-type' => 'text/html']);
     }
 }
