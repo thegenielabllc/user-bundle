@@ -53,6 +53,7 @@ class RegistrationController extends Controller
         
         if (is_null($user->getUsername())) {
             $user->setUsername(uniqid());
+            $user->addRole('ROLE_USER');
         }
 
         $event = new GetResponseUserEvent($user, $request);
