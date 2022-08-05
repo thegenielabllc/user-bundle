@@ -52,7 +52,7 @@ class RegistrationController extends Controller
         $user->setEnabled(true);
         
         if (is_null($user->getUsername())) {
-            $user->setUsername(uniqid());
+            $user->setUsername(uniqid().time());
             $user->addRole('ROLE_USER');
         }
 
