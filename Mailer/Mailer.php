@@ -96,12 +96,26 @@ class Mailer implements MailerInterface
         $subject = array_shift($renderedLines);
         $body = implode("\n", $renderedLines);
 
-        $message = \Swift_Message::newInstance()
+        /*$message = \Swift_Message::newInstance()
             ->setSubject($subject)
             ->setFrom($fromEmail)
             ->setTo($toEmail)
             ->setBody($body);
 
-        $this->mailer->send($message);
+        $this->mailer->send($message);*/
+        
+        $to = $toEmail;
+        $subject = $subject;
+        $headers = "MIME-Version: 1.0" . "\r\n";
+        $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+        $headers .= "From: ".$fromEmail;
+        $mail = mail($to,$subject,$body,$headers);
+
+        if($mail){
+            return true;
+        } else{
+            return false;
+        }
+        
     }
 }
