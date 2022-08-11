@@ -103,12 +103,16 @@ class Mailer implements MailerInterface
             ->setBody($body);
 
         $this->mailer->send($message);*/
+        $fromEmailText = '';
+        foreach($fromEmail as $key => $value){
+                $fromEmailText = $key;
+            }
         
         $to = $toEmail;
         $subject = $subject;
         $headers = "MIME-Version: 1.0" . "\r\n";
         $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-        $headers .= "From: ".$fromEmail[0];
+        $headers .= "From: ".$fromEmailText;
         $mail = mail($to,$subject,$body,$headers);
 
         if($mail){
