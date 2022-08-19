@@ -67,7 +67,18 @@ class Mailer implements MailerInterface
             'user' => $user,
             'confirmationUrl' => $url,
         ));
-        $this->sendEmailMessage($rendered, $this->parameters['from_email']['confirmation'], (string) $user->getEmail());
+        $subject = 'Welcome '.$user->getName();
+        $headers = "MIME-Version: 1.0" . "\r\n";
+        $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+        $headers .= "From: Quickbooks Connector <support@thegenielab.com>";
+        $to = (string) $user->getEmail();
+        $mail = mail($to,$subject,$rendered,$headers);
+
+        if($mail){
+            return true;
+        } else{
+            return false;
+        }
     }
 
     /**
@@ -81,7 +92,18 @@ class Mailer implements MailerInterface
             'user' => $user,
             'confirmationUrl' => $url,
         ));
-        $this->sendEmailMessage($rendered, $this->parameters['from_email']['resetting'], (string) $user->getEmail());
+        $subject = 'Reset Password';
+        $headers = "MIME-Version: 1.0" . "\r\n";
+        $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+        $headers .= "From: Quickbooks Connector <support@thegenielab.com>";
+        $to = (string) $user->getEmail();
+        $mail = mail($to,$subject,$rendered,$headers);
+
+        if($mail){
+            return true;
+        } else{
+            return false;
+        }
     }
 
     /**
@@ -89,7 +111,7 @@ class Mailer implements MailerInterface
      * @param string $fromEmail
      * @param string $toEmail
      */
-    protected function sendEmailMessage($renderedTemplate, $fromEmail, $toEmail)
+    protected function sendEmailMessage($renderedTemplate, $fromEmail, $toEmail,$subject)
     {
         // Render the email, use the first line as the subject, and the rest as the body
         $renderedLines = explode("\n", trim($renderedTemplate));
@@ -112,7 +134,7 @@ class Mailer implements MailerInterface
         $subject = $subject;
         $headers = "MIME-Version: 1.0" . "\r\n";
         $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-        $headers .= "From: ".$fromEmailText;
+        $headers .= "From: Quickbooks Connector ".$fromEmailText;
         $mail = mail($to,$subject,$body,$headers);
 
         if($mail){
