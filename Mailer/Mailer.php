@@ -63,7 +63,7 @@ class Mailer implements MailerInterface
     {
         $template = $this->parameters['confirmation.template'];
         $url = $this->router->generate('fos_user_registration_confirm', array('token' => $user->getConfirmationToken()), UrlGeneratorInterface::ABSOLUTE_URL);
-        $rendered = $this->templating->render($template, array(
+        $rendered = $this->templating->render('FOSUserBundle:Registration:email.html.twig', array(
             'user' => $user,
             'confirmationUrl' => $url,
         ));
@@ -88,7 +88,7 @@ class Mailer implements MailerInterface
     {
         $template = $this->parameters['resetting.template'];
         $url = $this->router->generate('fos_user_resetting_reset', array('token' => $user->getConfirmationToken()), UrlGeneratorInterface::ABSOLUTE_URL);
-        $rendered = $this->templating->render($template, array(
+        $rendered = $this->templating->render('FOSUserBundle:Resetting:email.html.twig', array(
             'user' => $user,
             'confirmationUrl' => $url,
         ));
