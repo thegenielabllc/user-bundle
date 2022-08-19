@@ -176,12 +176,10 @@ class RegistrationController extends Controller
             throw new AccessDeniedException('This user does not have access to this section.');
         }
 
-        $template  =  $this->renderView('@FOSUser/Registration/confirmed.html.twig', array(
-            'user' => $user,
-            'targetUrl' => $this->getTargetUrlFromSession(),
-        ));
+        $url = $this->generateUrl('user_connections_index');
+            return  new RedirectResponse($url);
         
-        return new Response($template, 200, ['content-type' => 'text/html']);
+        
     }
 
     /**
