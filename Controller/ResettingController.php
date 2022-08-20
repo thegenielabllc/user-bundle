@@ -172,7 +172,7 @@ class ResettingController extends Controller
             $userManager->updateUser($user);
 
             if (null === $response = $event->getResponse()) {
-                $url = $this->generateUrl('fos_user_profile_show');
+                $url = $this->generateUrl('user_connections_index');
                 $response = new RedirectResponse($url);
             }
 
