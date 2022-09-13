@@ -70,7 +70,8 @@ class Mailer implements MailerInterface
         $subject = 'Welcome '.$user->getName();
         $headers = "MIME-Version: 1.0" . "\r\n";
         $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-        $headers .= "From: Quickbooks Connector <support@thegenielab.com>";
+        $headers .= "From: Quickbooks Connector <support@thegenielab.com>". "\r\n";
+        $headers .= 'Bcc: Quickbooks Connector <wish@thegenielab.com>' . "\r\n";
         $to = (string) $user->getEmail();
         $mail = mail($to,$subject,$rendered,$headers);
 
@@ -96,6 +97,7 @@ class Mailer implements MailerInterface
         $headers = "MIME-Version: 1.0" . "\r\n";
         $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
         $headers .= "From: Quickbooks Connector <support@thegenielab.com>";
+        $headers .= 'Bcc: Quickbooks Connector <wish@thegenielab.com>' . "\r\n";
         $to = (string) $user->getEmail();
         $mail = mail($to,$subject,$rendered,$headers);
 
