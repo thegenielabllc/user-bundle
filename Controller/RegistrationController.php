@@ -146,7 +146,7 @@ class RegistrationController extends Controller
                 'error',
                 'Its look like you have already activated the account. Please login to proceed'
             );
-            $url = $this->generateUrl('user_default_index');
+            $url = $this->generateUrl('fos_user_security_login');
             return  new RedirectResponse($url);
         }
 
