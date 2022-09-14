@@ -142,7 +142,12 @@ class RegistrationController extends Controller
         $user = $userManager->findUserByConfirmationToken($token);
 
         if (null === $user) {
-            throw new NotFoundHttpException(sprintf('The user with confirmation token "%s" does not exist', $token));
+            $this->addFlash(
+                'error',
+                'Its look like you have already activated the account. Please login to proceed'
+            );
+            $url = $this->generateUrl('user_default_index');
+            return  new RedirectResponse($url);
         }
 
         /** @var $dispatcher EventDispatcherInterface */
